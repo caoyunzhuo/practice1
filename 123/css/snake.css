@@ -1,0 +1,44 @@
+*{
+    padding:0;
+    margin:0;
+}
+.wrap{
+    width:1000px;
+    height:550px;
+    border:1px solid #000;
+}
+.ground{
+    width:1000px;
+    height:500px;
+    /*background: orange;*/
+    position: relative;
+}
+/*Иёзг*/
+.grid{
+    width:20px;
+    height: 20px;
+    background: orange;
+    float: left;
+}
+.snake{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: blue;
+}
+.food{
+    background: green;
+    width:20px;
+    height: 20px;
+    position: absolute;
+}
+.blow{
+    height: 50px;
+    line-height: 50px;
+}
+.advert{
+    float: left;
+}
+.btn{
+    float: right;
+}

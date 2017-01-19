@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        #main{
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+
+        }
+        .menu{
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            -webkit-transition: transform 1s ease-in-out;
+        }
+        #home{
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            -webkit-transition: transform 1s ease-in-out;
+        }
+        #home img{
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            -webkit-transition: transform 1s ease-in-out;
+        }
+
+    </style>
+</head>
+<body>
+<div id="main">
+        <img  class="menu" src="12.jpg" alt=""/>
+        <img  class="menu" src="13.jpg" alt=""/>
+        <img  class="menu" src="14.jpg" alt=""/>
+        <img  class="menu" src="15.jpg" alt=""/>
+        <img  class="menu" src="16.jpg" alt=""/>
+    <div id="home"><img src="11.jpg" alt=""/></div>
+
+</div>
+
+<script>
+     var oHome = document.getElementById("home");
+     var oMain = document.getElementById("main");
+     var aMenu = oMain.getElementsByClassName("menu");
+     var bFlag = false;//设置标志位，判断状态
+     //点击主图标，子图标旋转移动，且自身旋转
+    oHome.onclick = function(){
+        if(!bFlag){
+            //主图标自身旋转一周
+            this.style.WebkitTransform = "rotate(-360deg)";
+            //子图标变换
+            for(var i=0;i<aMenu.length;i++){
+                aMenu[i].style.WebkitTransitionDelay = i*40 + 'ms';//WebkitTransitionDelay对象过渡的延时时间  最上方先
+               aMenu[i].style.WebkitTransform = "translate("+(-180) * Math.sin((i*22.5)*Math.PI/180)+"px,"+(-180) * Math.cos((i*22.5)*Math.PI/180)+"px) rotate(-360deg)";
+//                 180 * Math.cos((i*22.5)*Math.PI/180);  Y轴移动的距离  角度数乘Math.PI/180变成角度
+//                180 * Math.sin((i*22.5)*Math.PI/180);   X轴移动的距离
+            }
+        }else{//若子图标展开，则合起操作
+            for(var j=0;j<aMenu.length;j++){
+                aMenu[j].style.WebkitTransitionDuration = "1s";//WebkitTransitionDuration对象过渡的持续时间
+                //设置延时，使最下方先回到原始位置
+                aMenu[j].style.WebkitTransitionDelay = (aMenu.length-j)*40 + 'ms';
+                aMenu[j].style.WebkitTransform = "translate(0px,0px) rotate(0deg)";
+            }
+            this.style.WebkitTransform = "rotate(0deg)";
+        }
+        bFlag = !bFlag;
+    }
+
+
+//展开后的按钮点击放大后缩回
+    for(var i=0;i<aMenu.length;i++){
+        aMenu[i].onclick = function(){
+            var currTransform = this.style.WebkitTransform;//获取当前aMenu的transform
+            //变化过程持续0.3秒
+            this.style.WebkitTransitionDuration = ".3s";
+            //点击按钮放大两倍变透明度
+            this.style.WebkitTransform = currTransform + ' scale(2)';
+            this.style.opacity = 0.3;
+            //要取消监听，否则每次进行Transition，都执行this.style.WebkitTransform = currTransform; this.style.opacity = 1;
+            var fn = function(){
+                //变大后返回原状态
+                this.style.WebkitTransform = currTransform;
+                this.style.opacity = 1;
+                //移除监听
+                this.removeEventListener('webkitTransitionEnd',fn);
+            }
+            this.addEventListener('webkitTransitionEnd',fn,false);//webkitTransitionEnd为transition完成后执行
+        }
+    }
+
+
+</script>
+</body>
+</html>

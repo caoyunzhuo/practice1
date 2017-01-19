@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+<style>
+    body{
+        background: black;
+        -webkit-perspective: 800px;
+        -webkit-perspective-origin:50% -5%;
+        /*position: relative;*/
+
+    }
+    #con{
+        -webkit-animation: xxx 3s linear 2;
+        position: relative;
+        -webkit-transform-style: preserve-3d;
+        /*margin: 200px;*/
+        height: 800px;
+
+    }
+
+    @-webkit-keyframes xxx{
+        from{
+
+        }
+        to{
+            -webkit-transform: rotateY(360deg)  rotateZ(360deg);
+        }
+    }
+    .turn{
+        height: 200px;
+        width: 200px;
+        background:white;
+        border: 1px solid slategrey;
+        position:absolute;
+        top: 200px;
+        left: 400px;
+        color: #008CD7;
+        font-size: 50px;
+        line-height: 200px;
+        text-align: center;
+        border-radius: 8px;
+        opacity: 0.6;
+    }
+    #one{
+        /*-webkit-transform-origin: top center;*/
+        -webkit-transform: rotateX(90deg) translateZ(100px);
+    }
+    #two{
+        -webkit-transform: translateZ(100px);
+    }
+    #four{
+        -webkit-transform: rotateY(180deg) translateZ(100px) ;
+
+    }
+    #three{
+        /*-webkit-transform-origin: 0 0 ;*/
+        -webkit-transform:rotateY(-90deg) translateZ(100px)  ;
+        /*-webkit-transform: translateX(-100px)rotateY(90deg);*/
+    }
+    #five{
+        /*-webkit-transform-origin: 200px 200px ;*/
+        -webkit-transform:rotateY(90deg) translateZ(100px)  ;
+    }
+    #six{
+        -webkit-transform: rotateX(-90deg) translateZ(100px);
+    }
+</style>
+</head>
+<body>
+<div id="con">
+    <div class="turn" id="one">1</div>
+    <div class="turn" id="two">2</div>
+    <div class="turn" id="three">3</div>
+    <div class="turn" id="four">4</div>
+    <div class="turn" id="five">5</div>
+    <div class="turn" id="six">6</div>
+</div>
+</body>
+</html>

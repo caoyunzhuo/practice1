@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #container{
+            width: 1000px;
+            height: 550px;
+            margin: 0 auto;
+            border: 1px solid black;
+        }
+
+        #ground{
+            width: 1000px;
+            height: 500px;
+            position: relative;
+        }
+        #ads{
+            width: 1000px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        #mes{
+            float: left;
+        }
+
+        #buttons{
+            float: right;
+        }
+
+        .block{
+            width: 20px;
+            height: 20px;
+            background:orange;
+            float: left;
+        }
+        .snake-block{
+            background: red;
+            position: absolute;
+        }
+        .food-block{
+            background: blue;
+            position: absolute;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="ground">
+
+        </div>
+        <div id="ads">
+            <div id="mes">贪吃蛇</div>
+            <div id="buttons">
+                <button id="start">开始</button>
+                <button id="pause">暂停</button>
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    var oGround = document.getElementById('ground');
+    var direction = 'right';
+    //初始化范围
+    for(i = 0;i < 50 * 25 ;i++){
+        var oGDiv = document.createElement('div');
+        oGDiv.className = 'block';
+        oGround.appendChild(oGDiv);
+    }
+
+
+    //创建蛇
+    var snakeBody = [];
+    for(i = 0;i < 3;i++){
+        var oSDiv = document.createElement('div');
+        oSDiv.className = 'block snake-block';
+        oSDiv.style.top = 60 + 'px';
+        oSDiv.style.left = 60 - i * 20 + 'px';
+        snakeBody.push(oSDiv);
+        oGround.appendChild(oSDiv);
+    }
+
+
+    //创建食物
+    var oFDiv = null;
+    function creatfood(){
+        var foodTop;
+        var foodLeft;
+        var bFlag = false;
+        do{
+            bFlag = false;
+            foodTop = parseInt(Math.random() * 25) * 20;
+            foodLeft = parseInt(Math.random() * 50) * 20;
+            for(i = 0;i < snakeBody.length;i++){
+                if(foodLeft == snakeBody[i].offsetLeft && foodTop == snakeBody[i].offsetTop){
+                    bFlag = true;
+                }
+            }
+
+        }while(bFlag);
+        oFDiv = document.createElement('div');
+        oFDiv.className = 'block food-block';
+        oFDiv.style.left = foodLeft + 'px';
+        oFDiv.style.top = foodTop + 'px';
+        oGround.appendChild(oFDiv);
+    }
+
+    creatfood();
+    //蛇移动
+    var next = null;
+    function move(){
+        var snakeHead = snakeBody[0];
+        if(direction == 'right'){
+            next = {
+                top:snakeHead.offsetTop,
+                left:snakeHead.offsetLeft + 20
+            }
+
+        }else if(direction == 'top'){
+            next = {
+                top:snakeHead.offsetTop - 20,
+                left:snakeHead.offsetLeft
+            }
+
+        }else if(direction == 'down'){
+            next = {
+                top:snakeHead.offsetTop + 20,
+                left:snakeHead.offsetLeft
+            }
+
+        }else if(direction == 'left'){
+            next = {
+                top:snakeHead.offsetTop,
+                left:snakeHead.offsetLeft - 20
+            }
+        }
+
+
+
+
+        //蛇吃食物 增长身体
+        if(oFDiv.offsetLeft == next.left && oFDiv.offsetTop == next.top){
+            oFDiv.className = 'block snake-block';
+            snakeBody.unshift(oFDiv);
+            creatfood();
+        }else{
+            var oDiv = snakeBody.pop();
+            oDiv.style.left = next.left +'px';
+            oDiv.style.top = next.top +'px';
+            snakeBody.unshift(oDiv);
+        }
+
+        //判断是否撞墙或自己
+        for(var i = 1;i < snakeBody.length;i++){
+            snakeHead = snakeBody[0];
+            if(snakeHead.offsetLeft == snakeBody[i].offsetLeft && snakeHead.offsetTop == snakeBody[i].offsetTop){
+
+                alert('Game Over');
+
+            }
+
+
+        }
+
+
+
+
+
+
+    }
+    setInterval(move,200);
+    //控制蛇
+
+    document.onkeydown = function(e){
+        e = e || window.event;
+        var kc = e.which || e.keyCode;
+        if(kc == 37 && direction!='right'){
+            direction = 'left';
+        }else if(kc == 38 && direction!='down'){
+            direction = 'top';
+        }else if(kc == 39 && direction!='left'){
+            direction = 'right';
+        }else if(kc == 40 && direction!='top'){
+            direction = 'down';
+        }
+
+    };
+
+
+
+
+
+
+
+
+
+    //暂停开始
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

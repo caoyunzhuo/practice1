@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    ul{
+        list-style: none;
+    }
+    a{
+        text-decoration: none;
+    }
+   #content{
+       width: 1000px;
+       height: 800px;
+       background: black;
+       margin: 60px auto;
+       position: relative;
+       -webkit-perspective: 800px;
+       -webkit-perspective-origin: 50% -20%;
+
+   }
+    #both{
+        width: 128px;
+        height: 200px;
+        border:2px white solid;
+        box-shadow:3px 3px;
+        background: transparent;
+        position: absolute;
+        left:50%;
+        margin-left: -64px;
+        top:100px;
+        -webkit-transform-style: preserve-3d;
+
+    }
+    #both img{
+        width: 128px;
+        height: 200px;
+        position: absolute;
+        -webkit-transform-style: preserve-3d;
+        -webkit-transition: -webkit-transform 1s ease;
+        /*-webkit-transform: */
+
+    }
+
+    /*#both img:nth-child(9){*/
+        /*-webkit-transform: rotateY(-40deg);*/
+    /*}*/
+    /*#both img:nth-child(8){*/
+        /*-webkit-transform: rotateY(-80deg);*/
+    /*}*/
+    /*#both img:nth-child(7){*/
+        /*-webkit-transform: rotateY(-120deg);*/
+    /*}*/
+    /*#both img:nth-child(6){*/
+        /*-webkit-transform: rotateY(-160deg);*/
+    /*}*/
+</style>
+</head>
+<body>
+<div id="content">
+    <div id="both">
+        <img src="1.jpg" alt="">
+        <img src="2.jpg" alt="">
+        <img src="3.jpg" alt="">
+        <img src="4.jpg" alt="">
+        <img src="1.jpg" alt="">
+        <img src="2.jpg" alt="">
+        <img src="3.jpg" alt="">
+        <img src="4.jpg" alt="">
+        <img src="1.jpg" alt="">
+
+    </div>
+</div>
+<script>
+    var oBoth = document.getElementById("both");
+    var aImg = oBoth.getElementsByTagName("img");
+    var oMath = 64/Math.tan(20*Math.PI/180);
+    var index = 0;
+console.log(oMath);
+//    for(var i=0;i<aImg.length;i++){
+//
+//        aImg[i].style.webkitTransform = "rotateY("+i*40+"deg) translateZ("+(oMath+20)+"px)";
+////        aImg[i].onclick = function(){
+////            index++;
+////            oBoth.style.webkitTransform = "rotateY("+(-40*index)+"deg)";
+////        }
+//    }
+    var i=8;
+
+    var timer =  setInterval(function(){
+        aImg[i].style.webkitTransform = "rotateY("+(-i*40)+"deg) translateZ("+(oMath+20)+"px)";
+        i--;
+        if(i==-1){
+            clearInterval(timer)
+        }
+    },100);
+
+    oBoth.onclick = function(e){
+                index++;
+                oBoth.style.webkitTransform = "rotateY("+(-40*index)+"deg)";
+            }
+
+
+
+</script>
+</body>
+</html>

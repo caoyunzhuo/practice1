@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+
+        body{
+            height: 100%;
+        }
+        #box{
+            display: -webkit-flex;
+            height:500px;
+            -webkit-flex-direction:column;
+            background: blanchedalmond;
+        }
+        #box li:nth-child(1){
+            height: 50px;
+            width: 100%;
+            background: salmon;
+        }
+
+        #box li:nth-child(2){
+            -webkit-flex-grow: 1;
+            background: seagreen;
+        }
+        #box li:nth-child(3){
+            height: 50px;
+            width: 100%;
+            background: palevioletred;
+        }
+    </style>
+</head>
+<body>
+
+    <ul id="box">
+        <li id="header"></li>
+        <li id="content"></li>
+        <li id="footer"></li>
+    </ul>
+</body>
+</html>

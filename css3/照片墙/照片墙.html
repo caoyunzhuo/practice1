@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        html{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            width: 100%;
+            height: 100%;
+        }
+        #container{
+            width: 100%;
+            height: 100%;
+            background: blanchedalmond;
+            position: relative;
+        }
+        #container .img{
+            width: 125px;
+            height: 125px;
+            border: 5px solid #fff;
+            position: absolute;
+            left:-150px;
+            top:-150px;
+            -webkit-transition: all 1.5s ease-in-out;
+            /*background: url('img/thumbs/1.jpg');*/
+        }
+        #container .img span{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            -webkit-transition:opacity 2s ease-in-out;
+        }
+        #next,#prev{
+            width: 50px;
+            height: 80px;
+            position: absolute;
+            top:50%;
+            margin-top: -40px;
+            display: none;
+        }
+        #next{
+            border-radius: 8px 0 0 8px;
+            background:greenyellow;
+            right:0;
+        }
+        #prev{
+            border-radius: 0 8px 8px 0;
+            background: greenyellow;
+            left:0;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+
+</div>
+<div id="next"></div>
+<div id="prev"></div>
+<script>
+    var sum = 0;
+    var oContainer = document.getElementById('container');
+    //照片全部载入后执行函数loadSuccess函数，loadSuccess函数为照片墙具体操作
+    for(var i=0;i<24;i++){
+        var oImg = new Image();
+        oImg.onload = function(){
+            sum++;
+            if(sum == 48){
+                loadSuccess();
+            }
+        }
+        oImg.src = 'img/'+(i+1)+'.jpg';
+    }
+    for(var i=0;i<24;i++){
+        var oImg = new Image();
+        oImg.onload = function(){
+            sum++;
+            if(sum == 48){
+                loadSuccess();
+            }
+        }
+        oImg.src = 'img/little/'+(i+1)+'.jpg';
+    }
+    //每列之间距离
+    var colWidth = (oContainer.offsetWidth - 6 * 125)/7;
+    //每行之间距离
+    var rowHeight = (oContainer.offsetHeight - 4 * 125)/5;
+    var index = 0;
+
+    //照片墙操作函数
+    function loadSuccess() {
+
+        //创建每个小图片的DIV，双重for循环形成四行六列
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 6; j++) {
+                var oDiv = document.createElement("div");//创建div元素
+                oDiv.className = 'img';//赋予元素相同class
+
+                //将每个照片的行数和列数存入属性中
+                oDiv.colRow = {
+                    row: i,//行数
+                    col: j//列数
+                };
+                //每个小图片距最左与顶端距离，存入到div的属性中
+                oDiv.pos = {
+                    left: colWidth + j * (125 + colWidth),//每列之间间距+列数索引*（每个照片宽度+每列之间距离）索引由零开始
+                    top: rowHeight + i * (125 + rowHeight)//每行之间间距+行数索引*（每个照片高度+每行之间距离）索引由零开始
+                };
+
+                oDiv.imgIndex = index;//设置图片的索引值
+                oDiv.style.background = 'url(img/little/' + (index + 1) + '.jpg)';//设置背景图片
+                oDiv.onclick = fn;//当点击时，调用fn
+//                oDiv.style.left = "-150px";
+//                oDiv.style.top = "-150px";
+                oDiv.innerHTML = "<span></span>";//在div中添加span，用于合起来显示大图片，将背景图片定位调整透明度
+                oContainer.appendChild(oDiv);
+                index++;
+            }
+        }
+
+
+        var aDiv = oContainer.getElementsByTagName('div');
+        //定时器，将图片有延时推出
+        var timer = setInterval(function () {
+            index--;//由最后一张图片开始进入
+            //将每个图片定位到指定位置
+            aDiv[index].style.left = aDiv[index].pos.left + 'px';//元素距左边距离
+            aDiv[index].style.top = aDiv[index].pos.top + 'px';//元素距顶部距离
+            //设置图片随机倾斜程度   过渡时间在css中设置
+            aDiv[index].style.WebkitTransform = "rotate(" + (Math.random() * 40 - 20) + "deg)";
+            //当索引到第一张图片时，清除定时器
+            if (index == 0) {
+                clearInterval(timer);
+            }
+        }, 100);
+
+        var bFlag = true;//设置标志位，判断图片聚集和散开状态
+        //设置图片聚集和散开操作
+        function fn() {
+            //图片聚集
+            if (bFlag) {
+                //大图片外边距
+                var bigWidth = (oContainer.offsetWidth - 750) / 2;//大图片左边空白
+                var bigHeight = (oContainer.offsetHeight - 500) / 2;//大图片上方空白
+
+                //定位每个图片聚集后位置
+                for (var i = 0; i < 24; i++) {
+                    //图片聚集后位置
+                    aDiv[i].style.left = aDiv[i].colRow.col * 125 + bigWidth + 'px';
+                    aDiv[i].style.top = aDiv[i].colRow.row * 125 + bigHeight + 'px';
+                    aDiv[i].style.WebkitTransform = "rotate(0deg)";
+                    aDiv[i].style.border = "1px solid #fff";
+                    //设置span位置
+                    var oSpan1 = aDiv[i].getElementsByTagName('span')[0];
+                    oSpan1.style.opacity = 1;
+                    var spanLeft = -aDiv[i].colRow.col * 125;//列数*宽度
+                    var spanTop = -aDiv[i].colRow.row * 125;//行数*高度
+                    //将当前点击图片设为背景图片
+                    iNow = this.imgIndex;//取当前点击图片的索引值
+                    oSpan1.style.background = 'url(img/' + (this.imgIndex + 1) + '.jpg) ' + spanLeft + 'px ' + spanTop + 'px no-repeat';
+
+                    oNext.style.display = 'block';
+                    oPrev.style.display = 'block';
+                }
+            } else {
+                //图片散开到原有位置，span内图片变透明
+                for (var i = 0; i < 24; i++) {
+                    aDiv[i].style.left = aDiv[i].pos.left + 'px';
+                    aDiv[i].style.top = aDiv[i].pos.top + 'px';
+                    aDiv[i].style.WebkitTransform = "rotate(" + (Math.random() * 40 - 20) + "deg)";
+                    aDiv[i].style.border = "5px solid #fff";
+                    var oSpan = aDiv[i].getElementsByTagName('span')[0];
+                    oSpan.style.opacity = 0;
+                }
+                oNext.style.display = 'none';
+                oPrev.style.display = 'none';
+            }
+            bFlag = !bFlag;
+        }
+
+        //设置轮播图
+        var oPrev = document.getElementById('prev');
+        var oNext = document.getElementById('next');
+
+        //判断翻页方向
+        oNext.onclick = oPrev.onclick = function(){
+            if (this == oNext) {
+                iNow++;
+                if (iNow == aDiv.length) {
+                    iNow = 0;
+                }
+            } else {
+                iNow--;
+                if (iNow == -1) {
+                    iNow = aDiv.length - 1;
+                }
+            }
+
+            var arr = [];
+            for (var i = 0; i < 24; i++) {
+                arr.push(i);
+            }
+
+            arr.sort(function (a,b) {
+                return Math.random() - 0.5;
+            });
+
+
+            var timer2 = setInterval(function () {
+                var random = arr.pop();
+                var oSpan = aDiv[random].getElementsByTagName('span')[0];
+                //取出点击图片的索引
+                var spanLeft = -aDiv[random].colRow.col * 125;
+                var spanTop = -aDiv[random].colRow.row * 125;
+                oSpan.style.background = 'url(img/' + (iNow + 1) + '.jpg) ' + spanLeft + 'px ' + spanTop + 'px no-repeat';
+                if (arr.length == 0) {
+                    clearInterval(timer2);
+                }
+            }, 30);
+        };
+
+    }
+</script>
+</body>
+</html>

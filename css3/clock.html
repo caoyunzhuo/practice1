@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        #clock{
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            position: relative;
+            margin: 300px auto;
+            border:1px solid;
+        }
+        #hour{
+            height: 30px;
+            width: 3px;
+            background: black;
+            top: 70px;
+            left: 100px;
+            position: absolute;
+            -webkit-transform-origin: center bottom;
+        }
+        #min{
+            height: 50px;
+            width: 3px;
+            background: rosybrown;
+            top:50px;
+            left: 100px;
+            position: absolute;
+            /*-webkit-transform: rotate(20deg);*/
+            -webkit-transform-origin: center bottom;
+        }
+
+        #sec{
+            height: 60px;
+            width: 2px;
+            background: salmon;
+            top: 40px;
+            left: 100px;
+            position: absolute;
+            -webkit-transform-origin: center bottom;
+
+        }
+
+        #dial li{
+            width: 1px;
+            height: 4px;
+            background: black;
+            /*top: 0px;*/
+            left: 99px;
+            position: absolute;
+            /*-webkit-transform: rotate(6deg);*/
+            -webkit-transform-origin:center 100px;
+
+        }
+        #dial li:nth-child(5n+1){
+            height: 6px;
+        }
+
+        #num li{
+            height: 15px;
+            width: 15px;
+            /*background: darkgrey;*/
+            /*left: 92px;*/
+            position: absolute;
+            /*top: 4px;*/
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">
+        <ul id="dial">
+        </ul>
+        <ul id="num">
+            <li style="left: 92px;top: 4px">12</li>
+            <li style="left: 132px;top: 19px">1</li>
+            <!--<li style="left: 92+i"-->
+        </ul>
+        <div id="hour"></div>
+        <div id="min"></div>
+        <div id="sec"></div>
+    </div>
+<script>
+    var oDial = document.getElementById('dial');
+    var html = "";
+    for(var i=0;i<60;i++){
+      html += "<li style='-webkit-transform: rotate("+i*6+"deg)'><li>";
+    }
+    oDial.innerHTML = html;
+
+    var htmln ="";
+    for(var i=0;i<12;i++){
+        htmln += "<li sty"
+    }
+
+
+
+
+    var oHour = document.getElementById('hour');
+    var oMin = document.getElementById('min');
+    var oSec = document.getElementById('sec');
+    run();
+    setInterval(run,1000);
+    function run(){
+        var date = new Date();
+        var second = date.getSeconds(),
+                minute = date.getMinutes()+second/60,
+                hour = date.getHours()+minute/60;
+        oSec.style.WebkitTransform = "rotate("+second*6+"deg)";
+        oHour.style.WebkitTransform = "rotate("+hour*30+"deg)";
+        oMin.style.WebkitTransform = "rotate("+minute*6+"deg)";
+
+    }
+
+//    1
+//    setInterval(function(){
+//        var date = new Date();
+//        var second = date.getSeconds(),
+//                minute = date.getMinutes()+second/60,
+//                hour = date.getHours()+minute/60;
+//        oSec.style.WebkitTransform = "rotate("+second*6+"deg)";
+//        oHour.style.WebkitTransform = "rotate("+hour*30+"deg)";
+//        oMin.style.WebkitTransform = "rotate("+minute*6+"deg)";
+//
+//    },1000);
+
+
+
+//    2
+//    var run =  function run(){
+//        var date = new Date();
+//        var second = date.getSeconds(),
+//                minute = date.getMinutes()+second/60,
+//                hour = date.getHours()+minute/60;
+//        oSec.style.WebkitTransform = "rotate("+second*6+"deg)";
+//        oHour.style.WebkitTransform = "rotate("+hour*30+"deg)";
+//        oMin.style.WebkitTransform = "rotate("+minute*6+"deg)";
+//
+//    }
+//    run();//写在定义变量前则获取不到
+//    setInterval(run,1000);
+</script>
+</body>
+</html>
